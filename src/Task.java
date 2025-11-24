@@ -1,11 +1,11 @@
 import java.io.Serializable;
 
-
+// מודל של משימה
 public class Task implements Serializable {
-    private int id;
-    private String title;
-    private String description;
-    private Status status;
+    private int id;               // מזהה ייחודי
+    private String title;         // כותרת המשימה
+    private String description;   // תיאור המשימה
+    private Status status;        // סטטוס המשימה
 
     public Task(int id, String title, String description, Status status) {
         this.id = id;
@@ -14,7 +14,7 @@ public class Task implements Serializable {
         this.status = status;
     }
 
-    // Getters and Setters
+    // Getters ו-Setters מאפשרים גישה ושינוי ערכים
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -29,6 +29,7 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
+        // מחרוזת שמציגה את כל פרטי המשימה
         return "Task{" +
                 "id=" + id +
                 ", title='" + title + '\'' +

@@ -2,35 +2,37 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// Repository אחראי על שמירה וטעינה של המשימות מקובץ JSON
 public class TaskRepository {
     private List<Task> tasks = new ArrayList<>();
     private final String fileName = "tasks.json";
 
     public TaskRepository() {
-        load();
+        load(); // טעינת המשימות מקובץ בעת יצירת האובייקט
     }
 
     public void add(Task task) {
         tasks.add(task);
-        save();
+        save(); // שמירה אחרי הוספה
     }
 
     public void update(Task task) {
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i).getId() == task.getId()) {
-                tasks.set(i, task);
-                save();
+                tasks.set(i, task); // עדכון המשימה
+                save();             // שמירה אחרי עדכון
                 return;
             }
         }
     }
 
     public void delete(int id) {
-        tasks.removeIf(t -> t.getId() == id);
-        save();
+        tasks.removeIf(t -> t.getId() == id); // מחיקת משימה לפי ID
+        save(); // שמירה אחרי מחיקה
     }
 
     public Task getById(int id) {
+        // מחזיר משימה לפי ID או null אם לא קיימת
         return tasks.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 
@@ -38,7 +40,7 @@ public class TaskRepository {
         return tasks;
     }
 
-    // שמירה לקובץ JSON ידנית
+    // שמירה ידנית לקובץ JSON
     private void save() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(fileName))) {
             pw.println("[");
@@ -58,9 +60,9 @@ public class TaskRepository {
         }
     }
 
-    // טעינה מקובץ JSON ידנית
+    // טעינה ידנית מקובץ JSON
     private void load() {
-        tasks.clear();
+        tasks.clear(); // מנקה רשימת משימות קיימת
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             Task t = null;
@@ -78,11 +80,11 @@ public class TaskRepository {
                 } else if (line.startsWith("\"status\"") && t != null) {
                     String statusStr = line.split(":")[1].trim().replace("\"", "");
                     t.setStatus(Status.valueOf(statusStr));
-                    tasks.add(t);
+                    tasks.add(t); // מוסיף את המשימה לרשימה
                 }
             }
         } catch (IOException e) {
-            System.out.println("No existing tasks found.");
+            System.out.println("No existing tasks found."); // במקרה שהקובץ לא קיים
         }
     }
 }
